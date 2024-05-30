@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 This function to apply Pascal's Triangle
 """
