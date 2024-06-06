@@ -11,8 +11,11 @@ def canUnlockAll(boxes):
         false if not
     """
 
-    for idx in range(len(boxes) - 1):
-        if len(boxes[idx]) == 0:
-            return False
-    
-    return True
+    key = [0]
+    for i in key:
+        for j in boxes[i]:
+            if j not in key and j < len(boxes):
+                key.append(j)
+    if len(key) == len(boxes):
+        return True
+    return False
