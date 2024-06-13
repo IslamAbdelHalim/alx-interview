@@ -19,5 +19,5 @@ def minOperations(n):
             op += factor
             n //= factor
         factor += 1
-        
+
     return op
