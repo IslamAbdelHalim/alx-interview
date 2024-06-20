@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """reads stdin,compute metrics"""
-import sys
 import re
 
 
@@ -38,10 +37,8 @@ def run():
     }
     try:
         while True:
-            line = sys.stdin.readline()
-            if re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} - \[.*\] \
-                        \"GET /projects/260 HTTP/1.1\" \d{3} \d{1,4}$", line):
-                line_info = get_input(line)
+            line = input()
+            line_info = get_input(line)
             code = line_info.get('status_code', '0')
             if code in status_codes_stats.keys():
                 status_codes_stats[code] += 1
