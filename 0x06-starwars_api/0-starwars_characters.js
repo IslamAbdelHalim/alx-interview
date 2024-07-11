@@ -1,17 +1,17 @@
 #!/usr/bin/node
+
 const request = require('request');
-const args = process.argv;
-const film = args[2];
 
-const url = 'https://swapi-api.alx-tools.com/api/films/' + film;
-
-request(url, function(err, res, body) {
-	if(err)
-		throw err
-	characters = JSON.parse(body).characters;
-	for (const character of characters) {
-		request(character, function(err, res, body){
-				console.log(JSON.parse(body).name)
-		})
-	}
-})
+request('https://swapi-api.hbtn.io/api/films/' + process.argv[2], function (err, res, body) {
+  if (err) throw err;
+  const characters = JSON.parse(body).characters;
+  printChars(characters, 0);
+});
+const printChars = (characters, i) => {
+  if (i === characters.length) return;
+  request(characters[i], function (err, res, body) {
+    if (err) throw err;
+    console.log(JSON.parse(body).name);
+    printChars(characters, i + 1);
+  });
+};
