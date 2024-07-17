@@ -1,4 +1,4 @@
-#!/usr/bi/python3
+#!/usr/bin/python3
 """
 Make a function to rotate 2D matrix
 """
