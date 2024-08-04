@@ -1,28 +1,38 @@
 #!/usr/bin/python3
 """
-Island Perimeter
+Module 0-island_perimeter
 """
 
 
 def island_perimeter(grid):
-    """Island Perimeter"""
-    visit = set()
+    """
+    Determines the perimeter of
+    an island
+    """
+    visited = set()
+
+    if not grid:
+        return 0
 
     def dfs(i, j):
-        """dfs nested method"""
-        if i >= len(grid) or j >= len(grid[0]) or \
-           i < 0 or j < 0 or grid[i][j] == 0:
-            return 1
-        if (i, j) in visit:
+        """depth first search"""
+        if (i, j) in visited:
             return 0
-        visit.add((i, j))
-        perim = dfs(i, j + 1)
-        perim += dfs(i + 1, j)
-        perim += dfs(i, j - 1)
-        perim += dfs(i - 1, j)
-        return perim
+        if i >= len(grid) or\
+                j >= len(grid[0]) or\
+                i < 0 or j < 0 or\
+                grid[i][j] == 0:
+            return 1
+        visited.add((i, j))
+        result = dfs(i, j + 1)
+        result += dfs(i, j - 1)
+        result += dfs(i + 1, j)
+        result += dfs(i - 1, j)
+        return result
 
     for i in range(len(grid)):
         for j in range(len(grid[0])):
+            # do a dfs for only land
             if grid[i][j]:
                 return dfs(i, j)
+    return 0
