@@ -5,35 +5,24 @@ Island Perimeter
 
 
 def island_perimeter(grid):
-    """
-        function that returns the perimeter of island
-
-        Args:
-            grid => The matrix that represenet land and water
-
-        return:
-            perimeter of island
-    """
+    """Island Perimeter"""
     visit = set()
 
-    def dfs(r, c):
-        if r >= len(grid) or c >= len(grid[0])\
-                or r < 0 or c < 0 or grid[r][c] == 0:
+    def dfs(i, j):
+        """dfs nested method"""
+        if i >= len(grid) or j >= len(grid[0]) or \
+           i < 0 or j < 0 or grid[i][j] == 0:
             return 1
-
-        if (r, c) in visit:
+        if (i, j) in visit:
             return 0
+        visit.add((i, j))
+        perim = dfs(i, j + 1)
+        perim += dfs(i + 1, j)
+        perim += dfs(i, j - 1)
+        perim += dfs(i - 1, j)
+        return perim
 
-        visit.add((r, c))
-        perimeter = dfs(r, c + 1)
-        perimeter += dfs(r + 1, c)
-        perimeter += dfs(r, c - 1)
-        perimeter += dfs(r - 1, c)
-
-        return perimeter
-
-    for r in range(len(grid)):
-        if 1 in grid[r]:
-            for c in range(len(grid[0])):
-                if grid[r][c]:
-                    return dfs(r, c)
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j]:
+                return dfs(i, j)
