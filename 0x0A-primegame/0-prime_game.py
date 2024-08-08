@@ -1,57 +1,86 @@
 #!/usr/bin/python3
-"""Prime Game Module"""
+"""
+Module 0-prime_game
+"""
 
 
-def isWinner(x, nums):
-    """Method determine prime game winner"""
-    mariaCount = 0
-    benCount = 0
-
-    for num in nums:
-        roundSet = list(range(1, num + 1))
-        primeSet = primes_in_range(1, num)
-
-        if not primeSet:
-            benCount += 1
-            continue
-
-        MariaTurn = True
-
-        while(True):
-            if not primeSet:
-                if MariaTurn:
-                    benCount += 1
-                else:
-                    mariaCount += 1
-                break
-
-            smallestPrime = primeSet.pop(0)
-            roundSet.remove(smallestPrime)
-
-            roundSet = [x for x in roundSet if x % smallestPrime != 0]
-
-            MariaTurn = not MariaTurn
-
-    if mariaCount > benCount:
-        return "Maria"
-
-    if mariaCount < benCount:
-        return "Ben"
-
-    return None
-
-
-def is_prime(n):
-    """Return True in case n is prime"""
-    if n < 2:
+def isPrime(num):
+    """
+    checks if a num
+    is a prime number
+    """
+    if num < 2:
         return False
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
+    for i in range(2, num):
+        if (num % i) == 0:
             return False
     return True
 
 
-def primes_in_range(start, end):
-    """Return prime noms list"""
-    primes = [n for n in range(start, end+1) if is_prime(n)]
-    return primes
+def getPrime(ints):
+    """
+    Returns a prime number
+    from a set
+    """
+    for n in ints:
+        if isPrime(n):
+            return n
+    return None
+
+
+def removePrimeNo(ints, prime):
+    """
+    removes a prime number from a set
+    """
+    ints.remove(prime)
+
+
+def removeMultiples(ints, number, player):
+    """removes multiples of a number"""
+    for x in ints.copy():
+        if (x % number) == 0:
+            # print(f"{player} removes {x}")
+            ints.remove(x)
+
+
+def isWinner(x, nums):
+    """
+    Determines the winner
+    """
+    m_wins = 0
+    b_wins = 0
+    canPlay = True
+    times = 0
+
+    if not x or not nums:
+        return None
+
+    for n in nums:
+        ints = set([n for n in range(1, n + 1)])
+        player = "m"
+        while times <= x:
+            prime = getPrime(ints)
+            # A win for the other player
+            # when no more prime numbers exist
+            # print(f"{player} picks {prime}")
+            if prime is None:
+                if player == "m":
+                    b_wins += 1
+                else:
+                    m_wins += 1
+                break
+            # remove prime number
+            # print(f"{player} removes {prime}")
+            removePrimeNo(ints, prime)
+            removeMultiples(ints, prime, player)
+
+            if player == "b":
+                player = "m"
+            else:
+                player = "b"
+            times += 1
+        times = 0
+
+    if m_wins == b_wins:
+        return None
+    return "Maria" if m_wins > b_wins else "Ben"
